@@ -776,8 +776,10 @@
       background: var(--modal-overlay);
       display: none;
       align-items: flex-end;
-      z-index: 10;
-      backdrop-filter: blur(3px);
+      justify-content: center;
+      z-index: 100000;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .modal.open { display: flex; animation: fadeIn 0.22s ease-out; }
     .modal.open .sheet { animation: sheetIn 0.3s cubic-bezier(0.2,0.8,0.2,1); }
@@ -788,12 +790,15 @@
     .sheet {
       background: var(--sheet-bg);
       width: min(540px, 100%);
-      max-height: 93vh;
+      max-height: 90vh;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       border-radius: 28px 28px 0 0;
-      padding: 24px 18px calc(28px + env(safe-area-inset-bottom));
-      box-shadow: 0 -12px 48px rgba(0,0,0,0.18);
+      padding: 24px 18px calc(48px + env(safe-area-inset-bottom));
+      box-shadow: 0 -12px 48px rgba(0,0,0,0.3);
       border-top: 1px solid var(--border-subtle);
+      margin: 0 auto;
     }
     /* Drag handle indicator */
     .sheet::before {
@@ -955,7 +960,7 @@
     ============================================================ */
     .toast {
       position: fixed;
-      bottom: 88px;
+      bottom: calc(88px + env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: var(--slate-900);
@@ -966,7 +971,7 @@
       font-weight: 600;
       opacity: 0;
       transition: all 0.28s cubic-bezier(0.2,0.8,0.2,1);
-      z-index: 100;
+      z-index: 100050;
       pointer-events: none;
       box-shadow: 0 6px 24px rgba(0,0,0,0.25);
       display: flex;
@@ -1731,6 +1736,7 @@ function openFillModal(fillId = null) {
   document.getElementById('receiptMode').checked = false;
   document.getElementById('litres').readOnly = false;
   document.getElementById('receiptHint').textContent = 'กรอกจำนวนลิตรและราคาต่อลิตร ระบบจะคำนวณยอดเงินรวมให้';
+  document.body.style.overflow = 'hidden';
   document.getElementById('fillModal').classList.add('open');
 }
 
@@ -1820,6 +1826,7 @@ function clearReceipt() {
 function viewReceiptImage(src) {
   if (!src) return;
   document.getElementById('lightboxImg').src = src;
+  document.body.style.overflow = 'hidden';
   document.getElementById('receiptModal').classList.add('open');
 }
 
@@ -1926,6 +1933,7 @@ function openCarModal(carId = null) {
     document.getElementById('startOdo').value = 0;
     document.getElementById('carFuel').value = 'แก๊สโซฮอล์ 95';
   }
+  document.body.style.overflow = 'hidden';
   document.getElementById('carModal').classList.add('open');
 }
 
@@ -1981,13 +1989,17 @@ function deleteCar(id) {
 }
 
 function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.remove('open');
+  if (!document.querySelector('.modal.open')) {
+    document.body.style.overflow = '';
+  }
 }
 
 // Close modals when clicking backdrop
 document.querySelectorAll('.modal').forEach(m => {
   m.addEventListener('click', e => {
-    if (e.target === m) m.classList.remove('open');
+    if (e.target === m) closeModal(m.id);
   });
 });
 
