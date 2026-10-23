@@ -1,0 +1,2095 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b4d43" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GogoBike" />
+  <meta name="application-name" content="GogoBike" />
+  <title>GogoBike — บันทึกค่าน้ำมัน</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23059669%22/><text y=%2268%22 font-size=%2260%22 x=%2220%22>🏍️</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23059669%22/><text y=%2268%22 font-size=%2260%22 x=%2220%22>🏍️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Thai:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       DESIGN TOKEN SYSTEM — 60-30-10 Rule
+       60% → Neutral Dark Slate (surfaces, backgrounds)
+       30% → Emerald/Teal (brand, UI structure, interactive)
+       10% → Orange Amber (FAB, CTA, critical badges only)
+    ============================================================ */
+    :root {
+      /* ── Primitive Palette ── */
+      --emerald-400: #34d399;
+      --emerald-500: #10b981;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      --emerald-800: #065f46;
+      --emerald-900: #064e3b;
+      --emerald-950: #022c22;
+
+      --teal-400: #2dd4bf;
+      --teal-500: #14b8a6;
+      --teal-600: #0d9488;
+
+      --orange-400: #fb923c;
+      --orange-500: #f97316;
+      --orange-600: #ea6c0a;
+
+      --slate-0:   #ffffff;
+      --slate-50:  #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-850: #172033;
+      --slate-900: #0f172a;
+      --slate-950: #090e1a;
+
+      --red-400: #f87171;
+      --red-600: #dc2626;
+
+      /* ── Semantic Tokens — Light Mode (default) ── */
+      --bg-base:        var(--slate-100);
+      --bg-surface:     var(--slate-0);
+      --bg-elevated:    var(--slate-0);
+      --bg-muted:       var(--slate-50);
+      --bg-subtle:      #eaf7f2;
+
+      --text-primary:   var(--slate-900);
+      --text-secondary: var(--slate-500);
+      --text-muted:     var(--slate-400);
+      --text-inverse:   var(--slate-0);
+
+      --brand-primary:  var(--emerald-600);
+      --brand-light:    var(--emerald-400);
+      --brand-surface:  #dcfce7;
+
+      --accent-primary: var(--orange-500);
+      --accent-glow:    rgba(249, 115, 22, 0.4);
+
+      --border-subtle:  var(--slate-200);
+      --border-focus:   var(--teal-500);
+
+      --danger:         var(--red-600);
+      --danger-surface: #fee2e2;
+
+      --shadow-sm:  0 2px 8px rgba(15, 23, 42, 0.06);
+      --shadow-md:  0 6px 24px rgba(15, 23, 42, 0.09);
+      --shadow-lg:  0 12px 40px rgba(15, 23, 42, 0.12);
+      --shadow-fab: 0 8px 20px var(--accent-glow);
+
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+      --radius-xl: 22px;
+
+      --header-bg-start: #0a3d32;
+      --header-bg-end:   #0d5c4a;
+      --header-picker-bg: rgba(255,255,255,0.12);
+      --header-picker-border: rgba(255,255,255,0.2);
+
+      --nav-bg: rgba(255,255,255,0.96);
+      --nav-border: var(--slate-200);
+      --nav-active: var(--emerald-600);
+
+      --sheet-bg: var(--slate-50);
+      --modal-overlay: rgba(9,14,26,0.6);
+
+      --stat-icon-bg: #dcfce7;
+      --tip-bg: #fffbeb;
+      --tip-border: #fde68a;
+      --tip-title: #92400e;
+
+      --bar-grad-start: var(--teal-400);
+      --bar-grad-end:   var(--emerald-700);
+
+      --input-bg: var(--slate-0);
+      --input-border: var(--slate-200);
+    }
+
+    /* ── Dark Mode Overrides ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-base:        var(--slate-950);
+        --bg-surface:     var(--slate-900);
+        --bg-elevated:    var(--slate-850);
+        --bg-muted:       var(--slate-800);
+        --bg-subtle:      rgba(52, 211, 153, 0.08);
+
+        --text-primary:   var(--slate-50);
+        --text-secondary: var(--slate-400);
+        --text-muted:     var(--slate-500);
+
+        --brand-primary:  var(--emerald-400);
+        --brand-light:    var(--emerald-300, #6ee7b7);
+        --brand-surface:  rgba(52,211,153,0.12);
+
+        --border-subtle:  var(--slate-700);
+
+        --danger-surface: rgba(248,113,113,0.12);
+
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+        --shadow-md: 0 6px 24px rgba(0,0,0,0.4);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+
+        --header-bg-start: #061c17;
+        --header-bg-end:   #083829;
+        --header-picker-bg: rgba(255,255,255,0.08);
+
+        --nav-bg: rgba(15,23,42,0.95);
+        --nav-border: var(--slate-700);
+        --nav-active: var(--emerald-400);
+
+        --sheet-bg: var(--slate-850);
+
+        --stat-icon-bg: rgba(52,211,153,0.12);
+        --tip-bg: rgba(146,64,14,0.15);
+        --tip-border: rgba(253,230,138,0.2);
+        --tip-title: #fbbf24;
+
+        --bar-grad-start: var(--teal-500);
+        --bar-grad-end:   var(--emerald-800);
+
+        --input-bg: var(--slate-800);
+        --input-border: var(--slate-600);
+      }
+    }
+
+    /* ============================================================
+       GLOBAL RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', 'Noto Sans Thai', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; outline: none; }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    /* ============================================================
+       APP SHELL
+    ============================================================ */
+    #app {
+      max-width: 540px;
+      margin: auto;
+      min-height: 100vh;
+      background: var(--bg-base);
+      padding-bottom: 90px;
+      position: relative;
+    }
+
+    /* ============================================================
+       HEADER / TOP BAR
+    ============================================================ */
+    .top {
+      background: linear-gradient(145deg, var(--header-bg-start), var(--header-bg-end));
+      color: #fff;
+      padding: 20px 20px 28px;
+      border-radius: 0 0 28px 28px;
+      box-shadow: 0 6px 32px rgba(5, 150, 105, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle ambient glow circles in header */
+    .top::before {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%);
+      top: -60px; right: -40px;
+      pointer-events: none;
+    }
+    .top::after {
+      content: '';
+      position: absolute;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%);
+      bottom: -20px; left: 30px;
+      pointer-events: none;
+    }
+
+    .topline { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
+
+    .brand { font-weight: 900; font-size: 23px; letter-spacing: -0.6px; }
+    .brand span { color: var(--orange-400); }
+
+    .settings-icon-btn {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 18px;
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      transition: background 0.18s;
+    }
+    .settings-icon-btn:hover { background: rgba(255,255,255,0.2); }
+
+    .car-picker {
+      margin-top: 18px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 15px;
+      background: var(--header-picker-bg);
+      border: 1px solid var(--header-picker-border);
+      border-radius: var(--radius-md);
+      color: #fff;
+      transition: background 0.2s;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(4px);
+    }
+    .car-picker:active { background: rgba(255,255,255,0.2); }
+    .car-picker small { opacity: 0.75; display: block; font-size: 11px; margin-bottom: 2px; }
+    .car-picker b { font-size: 15px; font-weight: 700; }
+    .car-picker-arrow {
+      font-size: 18px;
+      opacity: 0.8;
+      transition: transform 0.2s;
+    }
+
+    /* ============================================================
+       MAIN CONTENT AREA
+    ============================================================ */
+    .main { padding: 16px; }
+
+    .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 4px 0 14px;
+    }
+    .heading h2 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+    .heading a, .heading button.link {
+      font-size: 13px;
+      color: var(--brand-primary);
+      font-weight: 700;
+      background: none;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .heading a:hover, .heading button.link:hover {
+      background: var(--brand-surface);
+    }
+
+    /* ============================================================
+       SUMMARY CARD (Last Fill Hero)
+    ============================================================ */
+    .summary {
+      background: var(--bg-surface);
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .summary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(52,211,153,0.04), transparent 60%);
+      pointer-events: none;
+    }
+    .summary-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .summary .date { color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
+    .sub { color: var(--text-secondary); font-size: 12px; }
+    .amount {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--accent-primary);
+      margin: 8px 0 2px;
+      letter-spacing: -0.5px;
+    }
+    .detail-row {
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 14px;
+      padding-top: 13px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+    .detail-row b { font-size: 15px; font-weight: 700; display: block; color: var(--text-primary); }
+    .detail-row span { font-size: 11px; color: var(--text-secondary); margin-top: 1px; display: block; }
+
+    /* ============================================================
+       STAT GRID (4 Metric Cards)
+    ============================================================ */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .stat {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .stat:active { transform: scale(0.98); }
+
+    .stat .icon {
+      width: 36px; height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--stat-icon-bg);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .stat .label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .stat .value {
+      font-size: 19px;
+      font-weight: 800;
+      margin-top: 3px;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+    .stat .unit { font-size: 11px; font-weight: 500; color: var(--text-muted); }
+
+    /* ============================================================
+       CHART CARDS
+    ============================================================ */
+    .chart-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-top: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+    }
+    .chart-card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .chart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .legend {
+      font-size: 11px;
+      color: var(--brand-primary);
+      font-weight: 600;
+      background: var(--brand-surface);
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .linechart { width: 100%; height: 150px; overflow: visible; }
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 10px;
+      padding: 6px 4px 0;
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       TIP CARD
+    ============================================================ */
+    .tips {
+      margin-top: 14px;
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .tips-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .tips b { display: block; color: var(--tip-title); font-size: 12px; font-weight: 700; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .tips span { color: var(--text-secondary); }
+
+    /* ============================================================
+       BOTTOM NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(540px, 100%);
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--nav-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 9px 8px max(9px, env(safe-area-inset-bottom));
+      z-index: 9998;
+    }
+    .nav button {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      min-width: 62px;
+      padding: 4px 2px;
+      transition: color 0.2s, transform 0.2s;
+      border-radius: 10px;
+    }
+    .nicon { font-size: 20px; display: block; margin-bottom: 2px; }
+    .nav button.active {
+      color: var(--nav-active);
+      font-weight: 800;
+      transform: translateY(-2px);
+    }
+
+    /* ============================================================
+       FLOATING ACTION BUTTON
+    ============================================================ */
+    .fab {
+      position: fixed;
+      right: max(calc((100% - 540px)/2 + 18px), 18px);
+      bottom: calc(74px + env(safe-area-inset-bottom));
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--orange-400), var(--orange-600));
+      color: #fff;
+      font-size: 26px;
+      font-weight: 300;
+      box-shadow: var(--shadow-fab);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+    }
+    .fab:hover { transform: scale(1.06); }
+    .fab:active { transform: scale(0.92); box-shadow: none; }
+
+    /* ซ่อน Netlify Badge / Feedback Drawer ที่แทรกเข้ามาบังเมนู */
+    netlify-drawer,
+    [data-netlify-badge],
+    .netlify-badge,
+    #netlify-badge,
+    iframe[title*="Netlify" i],
+    iframe[src*="netlify" i],
+    div:has(> a[href*="netlify.com"]) {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      opacity: 0 !important;
+    }
+
+    /* ============================================================
+       PAGE TRANSITIONS
+    ============================================================ */
+    .page { display: none; }
+    .page.active { display: block; animation: pageIn 0.3s cubic-bezier(0.2,0.8,0.2,1); }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       FILTER BAR
+    ============================================================ */
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* ============================================================
+       INPUT FIELDS
+    ============================================================ */
+    .filters input, .filters select,
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: border-color 0.15s;
+    }
+    .filters input:focus, .filters select:focus,
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--border-focus);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+    }
+    .field textarea { resize: none; }
+
+    /* ============================================================
+       HISTORY LIST
+    ============================================================ */
+    .history-list {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+    }
+    .entry {
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 40px 1fr auto 66px;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      animation: entryIn 0.28s both;
+      transition: background 0.15s;
+    }
+    .entry:last-child { border-bottom: 0; }
+    .entry:hover { background: var(--bg-muted); }
+    @keyframes entryIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .fuel-dot {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--stat-icon-bg);
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+    }
+    .entry-title { font-weight: 700; font-size: 14px; color: var(--text-primary); }
+    .entry-meta {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .entry-money { font-weight: 800; font-size: 14px; text-align: right; color: var(--text-primary); }
+    .entry-litre { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 3px; }
+    .entry-actions { display: flex; gap: 4px; justify-content: flex-end; }
+
+    .action-btn {
+      background: transparent;
+      font-size: 15px;
+      width: 30px; height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+    }
+    .action-btn.edit-btn  { color: var(--teal-500); }
+    .action-btn.edit-btn:hover  { background: rgba(20,184,166,0.1); color: var(--teal-600); }
+    .action-btn.delete-btn { color: var(--red-400); }
+    .action-btn.delete-btn:hover { background: rgba(248,113,113,0.12); color: var(--red-600); }
+
+    /* ============================================================
+       BADGES
+    ============================================================ */
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .badge-active {
+      background: var(--brand-surface);
+      color: var(--brand-primary);
+    }
+    .badge-receipt {
+      background: rgba(14,165,233,0.12);
+      color: #0284c7;
+      cursor: pointer;
+    }
+    .badge-receipt:hover { background: rgba(14,165,233,0.2); }
+
+    .empty {
+      color: var(--text-muted);
+      text-align: center;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    .empty p { font-size: 14px; }
+
+    /* ============================================================
+       BAR CHART
+    ============================================================ */
+    .barset {
+      height: 170px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      padding: 10px 6px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .bar {
+      flex: 1;
+      background: linear-gradient(180deg, var(--bar-grad-start), var(--bar-grad-end));
+      border-radius: 7px 7px 0 0;
+      position: relative;
+      min-width: 20px;
+      animation: barGrow 0.5s cubic-bezier(0.2,0.8,0.2,1) both;
+      transform-origin: bottom;
+      transition: filter 0.2s;
+      cursor: pointer;
+    }
+    .bar:hover { filter: brightness(1.15); }
+    @keyframes barGrow {
+      from { transform: scaleY(0.05); }
+      to   { transform: scaleY(1); }
+    }
+    .bar span {
+      position: absolute;
+      bottom: -21px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .bar small {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       COMPARE ROW
+    ============================================================ */
+    .compare { margin-top: 2px; }
+    .compare-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .compare-row:last-child { border: 0; }
+
+    /* ============================================================
+       CAR CARDS
+    ============================================================ */
+    .car-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 12px;
+      transition: box-shadow 0.2s;
+    }
+    .car-card:hover { box-shadow: var(--shadow-md); }
+    .car-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .car-card h3 { margin: 0 0 6px; font-size: 17px; font-weight: 800; color: var(--text-primary); }
+    .car-card p { color: var(--text-secondary); font-size: 13px; margin: 0 0 14px; line-height: 1.5; }
+    .car-card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    /* ============================================================
+       SETTINGS
+    ============================================================ */
+    .settings-container {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      padding: 0 16px;
+    }
+    .settings-row {
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .settings-row:last-child { border: 0; }
+    .settings-row b { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .settings-row small { display: block; color: var(--text-secondary); margin-top: 3px; font-size: 12px; }
+    .settings-row > div:first-child { flex: 1; min-width: 0; }
+
+    /* ============================================================
+       MODE SELECTOR (Simple / Advanced)
+    ============================================================ */
+    #app.simple .advanced-only { display: none !important; }
+
+    .mode-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 0 4px; }
+    .mode-button {
+      background: var(--bg-muted);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 12px 13px;
+      text-align: left;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    .mode-button b { display: block; font-size: 13px; font-weight: 700; }
+    .mode-button small { display: block; color: var(--text-secondary); font-size: 11px; margin-top: 3px; }
+    .mode-button.active {
+      background: var(--brand-surface);
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+    .mode-button.active b { color: var(--brand-primary); }
+
+    /* ============================================================
+       MODAL & BOTTOM SHEETS
+    ============================================================ */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      display: none;
+      align-items: flex-end;
+      z-index: 10;
+      backdrop-filter: blur(3px);
+    }
+    .modal.open { display: flex; animation: fadeIn 0.22s ease-out; }
+    .modal.open .sheet { animation: sheetIn 0.3s cubic-bezier(0.2,0.8,0.2,1); }
+
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes sheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .sheet {
+      background: var(--sheet-bg);
+      width: min(540px, 100%);
+      max-height: 93vh;
+      overflow-y: auto;
+      border-radius: 28px 28px 0 0;
+      padding: 24px 18px calc(28px + env(safe-area-inset-bottom));
+      box-shadow: 0 -12px 48px rgba(0,0,0,0.18);
+      border-top: 1px solid var(--border-subtle);
+    }
+    /* Drag handle indicator */
+    .sheet::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 4px;
+      background: var(--border-subtle);
+      border-radius: 2px;
+      margin: -12px auto 18px;
+    }
+    .sheet-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .sheet h2 { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+    .close {
+      font-size: 24px;
+      background: var(--bg-muted);
+      color: var(--text-secondary);
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+      transition: background 0.15s;
+    }
+    .close:hover { background: var(--border-subtle); }
+
+    /* ============================================================
+       FORM FIELDS
+    ============================================================ */
+    .field { margin-bottom: 13px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .check { display: flex; align-items: center; gap: 10px; margin: 13px 0; font-size: 14px; cursor: pointer; color: var(--text-primary); }
+    .check input { accent-color: var(--brand-primary); width: 18px; height: 18px; }
+
+    .advanced-divider {
+      border: 0;
+      border-top: 1px dashed var(--border-subtle);
+      margin: 18px 0 12px;
+    }
+    .advanced-title {
+      font-size: 11px;
+      color: var(--brand-primary);
+      font-weight: 800;
+      margin: 10px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .advanced-title span {
+      background: var(--brand-surface);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 10px;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .primary {
+      width: 100%;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-700));
+      color: #fff;
+      padding: 15px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-top: 8px;
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 4px 14px rgba(5,150,105,0.35);
+      letter-spacing: 0.2px;
+    }
+    .primary:hover { box-shadow: 0 6px 20px rgba(5,150,105,0.45); transform: translateY(-1px); }
+    .primary:active { transform: scale(0.99) translateY(0); box-shadow: none; }
+
+    .secondary {
+      background: var(--brand-surface);
+      color: var(--brand-primary);
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 13px;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .secondary:hover { border-color: var(--brand-primary); }
+    .secondary:active { background: rgba(5,150,105,0.12); }
+
+    .danger-btn {
+      background: var(--danger-surface);
+      color: var(--danger);
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+    .danger-btn:hover { background: rgba(220,38,38,0.18); }
+
+    .validation {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: -6px;
+      margin-bottom: 8px;
+      display: none;
+      padding: 6px 10px;
+      background: var(--danger-surface);
+      border-radius: 8px;
+      border-left: 3px solid var(--danger);
+    }
+
+    /* ============================================================
+       RECEIPT PREVIEW
+    ============================================================ */
+    .receipt-preview-box {
+      margin-top: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: var(--bg-muted);
+      padding: 10px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+    .receipt-preview-img {
+      width: 52px; height: 52px;
+      object-fit: cover;
+      border-radius: 9px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s;
+    }
+    .receipt-preview-img:hover { transform: scale(1.05); }
+    .lightbox-img {
+      width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    /* ============================================================
+       TOAST NOTIFICATION
+    ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 88px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--slate-900);
+      color: var(--slate-50);
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.28s cubic-bezier(0.2,0.8,0.2,1);
+      z-index: 100;
+      pointer-events: none;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ============================================================
+       RESPONSIVE & DARK BODY BG (desktop)
+    ============================================================ */
+    @media (min-width: 541px) {
+      body { background: #0c1420; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="app" class="simple">
+  <header class="top">
+    <div class="topline">
+      <div class="brand">Fuel <span>Log</span></div>
+      <button class="settings-icon-btn" aria-label="เปิดการตั้งค่า" onclick="showPage('settings')">⚙</button>
+    </div>
+    <button class="car-picker" onclick="showPage('cars')">
+      <span>
+        <small>มอเตอร์ไซค์ที่กำลังดู</small>
+        <b id="selectedCarName">กำลังโหลด...</b>
+      </span>
+      <span class="car-picker-arrow">⌄</span>
+    </button>
+  </header>
+
+  <main class="main">
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page active">
+      <div class="heading">
+        <h2>ภาพรวมของคุณ</h2>
+        <a onclick="showPage('history')">ดูประวัติ ›</a>
+      </div>
+      <article class="summary" id="lastFill"></article>
+      <div class="stat-grid">
+        <article class="stat">
+          <div class="icon">🛣️</div>
+          <div class="label">ระยะทางล่าสุด</div>
+          <div class="value" id="latestOdo">—</div>
+        </article>
+        <article class="stat">
+          <div class="icon">⛽</div>
+          <div class="label">อัตราสิ้นเปลืองเฉลี่ย</div>
+          <div class="value" id="averageEff">—</div>
+        </article>
+        <article class="stat">
+          <div class="icon">💸</div>
+          <div class="label">ค่าน้ำมันเดือนนี้</div>
+          <div class="value" id="monthCost">—</div>
+        </article>
+        <article class="stat">
+          <div class="icon">📍</div>
+          <div class="label">ค่าใช้จ่ายต่อกม.</div>
+          <div class="value" id="costPerKm">—</div>
+        </article>
+      </div>
+      <article class="chart-card">
+        <div class="chart-head">
+          <h3>แนวโน้มอัตราสิ้นเปลือง</h3>
+          <span class="legend">กม./ลิตร</span>
+        </div>
+        <svg class="linechart" viewBox="0 0 330 150" role="img" aria-label="กราฟอัตราสิ้นเปลือง">
+          <path d="M12 118H320M12 78H320M12 38H320" stroke="var(--border-subtle)" fill="none"/>
+          <path id="effLine" d="" fill="none" stroke="var(--teal-500)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <g id="effDots"></g>
+        </svg>
+        <div class="chart-labels" id="effChartLabels"></div>
+      </article>
+      <div class="tips">
+        <span class="tips-icon">💡</span>
+        <div>
+          <b>เคล็ดลับ</b>
+          <span id="tipText">เติมแบบเต็มถังทุกครั้งเพื่อให้อัตราสิ้นเปลืองแม่นยำขึ้น</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="history" class="page">
+      <div class="heading">
+        <h2>ประวัติการเติมน้ำมัน</h2>
+        <button class="secondary" onclick="exportCSV()">ส่งออก CSV</button>
+      </div>
+      <div class="filters">
+        <input id="search" oninput="renderHistory()" placeholder="ค้นหาปั๊ม / หมายเหตุ"/>
+        <select id="fuelFilter" onchange="renderHistory()">
+          <option value="">เชื้อเพลิงทั้งหมด</option>
+          <option>แก๊สโซฮอล์ 95</option>
+          <option>แก๊สโซฮอล์ 91</option>
+          <option>เบนซิน 95</option>
+          <option>ดีเซล</option>
+          <option>E20</option>
+          <option>E85</option>
+        </select>
+        <input type="date" id="fromDate" onchange="renderHistory()"/>
+        <input type="date" id="toDate" onchange="renderHistory()"/>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats" class="page">
+      <div class="heading">
+        <h2>สถิติและแนวโน้ม</h2>
+      </div>
+      <article class="chart-card">
+        <div class="chart-head">
+          <h3>ค่าใช้จ่ายน้ำมันย้อนหลัง 6 เดือน</h3>
+          <span class="legend">บาท</span>
+        </div>
+        <div class="barset" id="monthlyBars"></div>
+      </article>
+      <article class="chart-card">
+        <div class="chart-head">
+          <h3>ราคาเฉลี่ยต่อลิตร (6 ครั้งล่าสุด)</h3>
+          <span class="legend" id="avgPrice">—</span>
+        </div>
+        <svg class="linechart" viewBox="0 0 330 150" role="img" aria-label="กราฟราคาน้ำมัน">
+          <path d="M12 118H320M12 78H320M12 38H320" stroke="var(--border-subtle)" fill="none"/>
+          <path id="priceLine" d="" fill="none" stroke="var(--orange-500)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </article>
+      <article class="chart-card compare">
+        <h3>เปรียบเทียบรถในระบบ</h3>
+        <div id="comparison"></div>
+      </article>
+    </section>
+
+    <!-- CARS -->
+    <section id="cars" class="page">
+      <div class="heading">
+        <h2>รถของฉัน</h2>
+        <button class="secondary" onclick="openCarModal()">+ เพิ่มรถ</button>
+      </div>
+      <div id="carList"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="page">
+      <div class="heading">
+        <h2>ตั้งค่า</h2>
+        <button class="secondary" onclick="showPage('dashboard')">✕ ปิด</button>
+      </div>
+      <div class="settings-container">
+        <div class="settings-row" style="display:block">
+          <div>
+            <b>รูปแบบการบันทึก</b>
+            <small>เลือกตามความสะดวกในการใช้งาน ข้อมูลเดิมจะไม่สูญหาย</small>
+          </div>
+          <div class="mode-selector">
+            <button id="simpleModeBtn" class="mode-button" type="button" onclick="setMode('simple')">
+              <b>บันทึกธรรมดา</b>
+              <small>เน้นรวดเร็ว เฉพาะเลขไมล์และค่าน้ำมัน</small>
+            </button>
+            <button id="advancedModeBtn" class="mode-button" type="button" onclick="setMode('advanced')">
+              <b>Advanced</b>
+              <small>แนบสลิป, ปั๊ม, เชื้อเพลิง และหมายเหตุ</small>
+            </button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div><b>หน่วยระยะทาง</b><small>ค่าเริ่มต้นสำหรับการบันทึก</small></div>
+          <span>กิโลเมตร</span>
+        </div>
+        <div class="settings-row">
+          <div><b>สกุลเงิน</b><small>ค่าเริ่มต้นสำหรับค่าใช้จ่าย</small></div>
+          <span>บาท (THB)</span>
+        </div>
+        <div class="settings-row">
+          <div><b>สำรองและกู้คืนข้อมูล</b><small>ดาวน์โหลดไฟล์ JSON เก็บไว้ หรือนำเข้าเพื่อคืนค่า</small></div>
+          <div style="display:flex;gap:6px">
+            <button class="secondary" onclick="exportJSONBackup()">สำรองไฟล์</button>
+            <button class="secondary" onclick="document.getElementById('importFile').click()">กู้คืน</button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSONBackup(event)"/>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div><b>รีเซ็ตเป็นข้อมูลตัวอย่าง</b><small>ล้างข้อมูลและโหลดค่าเริ่มต้น</small></div>
+          <button class="danger-btn" onclick="resetToSample()">รีเซ็ต</button>
+        </div>
+      </div>
+      <p class="sub" style="padding:12px 4px 4px;font-size:12px">🔒 ข้อมูลทั้งหมดจะถูกบันทึกไว้อย่างปลอดภัยบนเครื่องของคุณเท่านั้น</p>
+    </section>
+  </main>
+
+  <!-- FLOATING ACTION BUTTON -->
+  <button class="fab" onclick="openFillModal()" aria-label="เพิ่มรายการเติมน้ำมัน">+</button>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="nav">
+    <button class="active" data-page="dashboard" onclick="showPage('dashboard')">
+      <span class="nicon">⌂</span>หน้าแรก
+    </button>
+    <button data-page="history" onclick="showPage('history')">
+      <span class="nicon">☷</span>ประวัติ
+    </button>
+    <button data-page="stats" onclick="showPage('stats')">
+      <span class="nicon">⌁</span>สถิติ
+    </button>
+    <button data-page="cars" onclick="showPage('cars')">
+      <span class="nicon">▣</span>รถของฉัน
+    </button>
+  </nav>
+</div>
+
+<!-- FILL MODAL (ADD / EDIT) -->
+<div class="modal" id="fillModal">
+  <form class="sheet" onsubmit="saveFill(event)">
+    <div class="sheet-head">
+      <h2 id="fillModalTitle">บันทึกการเติมน้ำมัน</h2>
+      <button class="close" type="button" onclick="closeModal('fillModal')">×</button>
+    </div>
+    
+    <input type="hidden" id="editingFillId" value=""/>
+
+    <div class="field-row">
+      <div class="field">
+        <label>วันที่และเวลา</label>
+        <input id="fillDate" type="datetime-local" required>
+      </div>
+      <div class="field">
+        <label>รถที่ใช้</label>
+        <select id="fillCar" required></select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>เลขไมล์ปัจจุบัน (กม.)</label>
+      <input id="odometer" type="number" min="0" step="1" required placeholder="เช่น 25480">
+    </div>
+    <div id="odoError" class="validation">เลขไมล์ไม่สอดคล้องกับรายการอื่น</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>ปริมาณน้ำมัน (ลิตร)</label>
+        <input id="litres" type="number" min="0.01" step="0.01" required oninput="calculateTotal()">
+      </div>
+      <div class="field">
+        <label>ราคาต่อลิตร (บาท)</label>
+        <input id="price" type="number" min="0.01" step="0.01" required oninput="recalculateFuel()">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>ยอดเงินรวม (บาท)</label>
+      <input id="total" type="number" min="0" step="0.01" required oninput="recalculateFuel()">
+    </div>
+
+    <label class="check">
+      <input id="receiptMode" type="checkbox" onchange="toggleReceiptMode()">
+      <span>คำนวณจำนวนลิตรจากยอดเงินในสลิป</span>
+    </label>
+    <p id="receiptHint" class="sub" style="margin:-6px 0 12px">กรอกจำนวนลิตรและราคาต่อลิตร ระบบจะคำนวณยอดเงินรวมให้</p>
+
+    <label class="check">
+      <input id="fullTank" type="checkbox" checked>
+      <span>เติมเต็มถัง (ใช้คำนวณอัตราสิ้นเปลือง กม./ลิตร)</span>
+    </label>
+
+    <!-- ADVANCED FIELDS ONLY -->
+    <div class="advanced-only">
+      <hr class="advanced-divider"/>
+      <div class="advanced-title">ข้อมูลเพิ่มเติม <span>Advanced</span></div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label>ประเภทเชื้อเพลิง</label>
+          <select id="fuel">
+            <option>แก๊สโซฮอล์ 95</option>
+            <option>แก๊สโซฮอล์ 91</option>
+            <option>เบนซิน 95</option>
+            <option>ดีเซล</option>
+            <option>E20</option>
+            <option>E85</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ปั๊มน้ำมัน / สถานที่</label>
+          <input id="station" placeholder="เช่น PTT พระราม 9, บางจาก">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>หมายเหตุ</label>
+        <textarea id="note" rows="2" placeholder="เช่น เดินทางต่างจังหวัด, เติมตอนฝนตก"></textarea>
+      </div>
+
+      <div class="field">
+        <label>รูปสลิปโอนเงิน / ใบเสร็จ</label>
+        <input id="receipt" type="file" accept="image/*" onchange="receiptSelected(event)">
+        <div id="receiptPreviewBox" style="display:none;" class="receipt-preview-box">
+          <img id="receiptPreviewImg" class="receipt-preview-img" alt="พรีวิวสลิป" onclick="viewReceiptImage(this.src)"/>
+          <div style="flex:1">
+            <small id="receiptFileName" class="sub" style="display:block;font-weight:700"></small>
+            <button type="button" class="danger-btn" style="padding:4px 8px;margin-top:4px" onclick="clearReceipt()">ลบรูปสลิป</button>
+          </div>
+        </div>
+        <small id="receiptStatus" class="sub" style="display:block;margin-top:4px">แนบไว้เป็นหลักฐานเพื่อตรวจสอบย้อนหลัง</small>
+      </div>
+    </div>
+
+    <button class="primary" id="saveFillBtn" type="submit">บันทึกรายการ</button>
+  </form>
+</div>
+
+<!-- CAR MODAL (ADD / EDIT) -->
+<div class="modal" id="carModal">
+  <form class="sheet" onsubmit="saveCar(event)">
+    <div class="sheet-head">
+      <h2 id="carModalTitle">เพิ่มรถใหม่</h2>
+      <button class="close" type="button" onclick="closeModal('carModal')">×</button>
+    </div>
+    <input type="hidden" id="editingCarId" value=""/>
+    <div class="field">
+      <label>ชื่อรถ / ฉายา</label>
+      <input id="carName" required placeholder="เช่น Honda Click 160">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>รุ่น</label>
+        <input id="carModel" placeholder="เช่น ABS / Standard">
+      </div>
+      <div class="field">
+        <label>ทะเบียน</label>
+        <input id="plate" placeholder="เช่น 1กข 1234 กทม.">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>ปีรถ</label>
+        <input id="carYear" type="number" min="1900" max="2100" placeholder="2024">
+      </div>
+      <div class="field">
+        <label>เลขไมล์เริ่มต้น (กม.)</label>
+        <input id="startOdo" type="number" min="0" value="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>เชื้อเพลิงหลัก</label>
+      <select id="carFuel">
+        <option>แก๊สโซฮอล์ 95</option>
+        <option>แก๊สโซฮอล์ 91</option>
+        <option>เบนซิน 95</option>
+        <option>ดีเซล</option>
+        <option>E20</option>
+        <option>E85</option>
+      </select>
+    </div>
+    <button class="primary" id="saveCarBtn" type="submit">บันทึกรถ</button>
+  </form>
+</div>
+
+<!-- RECEIPT LIGHTBOX MODAL -->
+<div class="modal" id="receiptModal">
+  <div class="sheet" style="padding-bottom:20px">
+    <div class="sheet-head">
+      <h2>รูปสลิป / ใบเสร็จ</h2>
+      <button class="close" type="button" onclick="closeModal('receiptModal')">×</button>
+    </div>
+    <div style="text-align:center;padding:10px 0">
+      <img id="lightboxImg" class="lightbox-img" src="" alt="สลิปฉบับเต็ม"/>
+    </div>
+    <button class="secondary" style="width:100%;margin-top:10px" onclick="closeModal('receiptModal')">ปิดหน้าต่าง</button>
+  </div>
+</div>
+
+<div id="toast" class="toast">บันทึกเรียบร้อย</div>
+
+<script>
+// --- LOCALIZATION & HELPERS ---
+const thDate = new Intl.DateTimeFormat('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+const thShortMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const money = n => new Intl.NumberFormat('th-TH', { maximumFractionDigits: 2 }).format(n || 0);
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function getLocalISOString(d = new Date()) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+// --- SAMPLE DATA ---
+const sampleCars = [
+  { id: 'car1', name: 'Honda Click 160', model: 'Click 160 ABS', plate: '1กข 1234', year: 2024, fuel: 'แก๊สโซฮอล์ 95', startOdo: 18000 }
+];
+
+const sampleFills = [
+  { id: 1, carId: 'car1', date: '2026-05-14T18:20', odo: 20220, litres: 12.4, price: 37.45, total: 464.38, fuel: 'แก๊สโซฮอล์ 95', station: 'PTT พระราม 9', full: true, note: '', receipt: '' },
+  { id: 2, carId: 'car1', date: '2026-06-10T07:45', odo: 20703, litres: 12.1, price: 37.12, total: 449.15, fuel: 'แก๊สโซฮอล์ 95', station: 'บางจาก ลาดพร้าว', full: true, note: '', receipt: '' },
+  { id: 3, carId: 'car1', date: '2026-07-08T19:10', odo: 21215, litres: 12.5, price: 36.98, total: 462.25, fuel: 'แก๊สโซฮอล์ 95', station: 'PTT วิภาวดี', full: true, note: 'เดินทางต่างจังหวัด', receipt: '' },
+  { id: 4, carId: 'car1', date: '2026-08-05T12:33', odo: 21701, litres: 12.2, price: 37.35, total: 455.67, fuel: 'แก๊สโซฮอล์ 95', station: 'Shell รัชดา', full: true, note: '', receipt: '' },
+  { id: 5, carId: 'car1', date: '2026-09-02T08:15', odo: 22226, litres: 12.8, price: 37.46, total: 479.49, fuel: 'แก๊สโซฮอล์ 95', station: 'PTT พระราม 9', full: true, note: '', receipt: '' },
+  { id: 6, carId: 'car1', date: '2026-10-01T17:40', odo: 22720, litres: 12.1, price: 37.18, total: 449.88, fuel: 'แก๊สโซฮอล์ 95', station: 'บางจาก อโศก', full: true, note: '', receipt: '' },
+  { id: 7, carId: 'car1', date: '2026-10-21T18:12', odo: 23215, litres: 12.3, price: 37.18, total: 457.31, fuel: 'แก๊สโซฮอล์ 95', station: 'PTT พระราม 9', full: true, note: 'เติมก่อนเดินทาง', receipt: '' }
+];
+
+// --- APP STATE ---
+let cars = JSON.parse(localStorage.fuelLogCars || 'null') || sampleCars;
+let fills = JSON.parse(localStorage.fuelLogFills || 'null') || sampleFills;
+let selectedCar = localStorage.fuelLogCar || (cars[0] ? cars[0].id : 'car1');
+let currentReceiptDataUrl = '';
+
+function persist() {
+  localStorage.fuelLogCars = JSON.stringify(cars);
+  localStorage.fuelLogFills = JSON.stringify(fills);
+  localStorage.fuelLogCar = selectedCar;
+}
+
+// --- MODE SWITCHING (SIMPLE / ADVANCED) ---
+function setMode(mode) {
+  const app = document.getElementById('app');
+  const simpleBtn = document.getElementById('simpleModeBtn');
+  const advBtn = document.getElementById('advancedModeBtn');
+  
+  if (mode === 'simple') {
+    app.classList.add('simple');
+    simpleBtn.classList.add('active');
+    advBtn.classList.remove('active');
+  } else {
+    app.classList.remove('simple');
+    simpleBtn.classList.remove('active');
+    advBtn.classList.add('active');
+  }
+  localStorage.fuelLogMode = mode;
+}
+
+// Initialize mode from storage
+const savedMode = localStorage.fuelLogMode || 'simple';
+setMode(savedMode);
+
+// --- NAVIGATION ---
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'history') renderHistory();
+  if (id === 'stats') renderStats();
+  if (id === 'cars') renderCars();
+  window.scrollTo(0, 0);
+}
+
+// --- DATA ACCESSORS & CALCULATIONS ---
+function currentCar() {
+  return cars.find(c => c.id === selectedCar) || cars[0] || { name: 'ไม่มีข้อมูลรถ' };
+}
+
+function carFills(id = selectedCar) {
+  return fills.filter(f => f.carId === id).sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+function efficiency(i, arr) {
+  if (!i || !arr[i].full || !arr[i - 1].full) return null;
+  const dist = arr[i].odo - arr[i - 1].odo;
+  return dist > 0 && arr[i].litres > 0 ? (dist / arr[i].litres) : null;
+}
+
+// --- RENDER DASHBOARD ---
+function renderDashboard() {
+  const c = currentCar();
+  const a = carFills();
+  const last = a.at(-1);
+  const eff = a.map((x, i) => efficiency(i, a)).filter(Boolean);
+  const dist = last && a.length > 1 ? last.odo - a[0].odo : 0;
+  const avg = eff.length ? eff.reduce((x, y) => x + y, 0) / eff.length : null;
+
+  // Dynamic Current Month
+  const now = new Date();
+  const nowKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const monthTotal = a.filter(x => x.date && x.date.startsWith(nowKey)).reduce((s, x) => s + x.total, 0);
+
+  document.getElementById('selectedCarName').textContent = c.name || 'เลือกรถ';
+  document.getElementById('latestOdo').innerHTML = last ? `${money(last.odo)} <span class="unit">กม.</span>` : '—';
+  document.getElementById('averageEff').innerHTML = avg ? `${avg.toFixed(1)} <span class="unit">กม./ลิตร</span>` : '—';
+  document.getElementById('monthCost').innerHTML = `${money(monthTotal)} <span class="unit">บาท</span>`;
+  document.getElementById('costPerKm').innerHTML = dist > 0 ? `${(a.reduce((s, x) => s + x.total, 0) / dist).toFixed(2)} <span class="unit">บ./กม.</span>` : '—';
+
+  // Last Fill Card
+  const lastFillElem = document.getElementById('lastFill');
+  if (last) {
+    const lastEff = eff.at(-1);
+    lastFillElem.innerHTML = `
+      <div class="summary-top">
+        <div>
+          <b>เติมน้ำมันล่าสุด</b>
+          <div class="date">${thDate.format(new Date(last.date))} · ${last.station || 'ไม่ระบุสถานที่'}</div>
+        </div>
+        <span style="font-size:24px">⛽</span>
+      </div>
+      <div class="amount">฿${money(last.total)}</div>
+      <div class="detail-row">
+        <div><b>${money(last.litres)}</b><span>ลิตร</span></div>
+        <div><b>฿${money(last.price)}</b><span>ต่อลิตร</span></div>
+        <div><b>${lastEff ? lastEff.toFixed(1) : '—'}</b><span>กม./ลิตร</span></div>
+      </div>
+    `;
+  } else {
+    lastFillElem.innerHTML = `
+      <div class="empty">
+        <p>ยังไม่มีรายการเติมน้ำมันของรถคันนี้</p>
+        <button class="secondary" style="margin-top:10px" onclick="openFillModal()">+ บันทึกครั้งแรก</button>
+      </div>
+    `;
+  }
+
+  // Efficiency Line Chart
+  renderLine('effLine', 'effDots', eff, 'var(--teal-500)');
+
+  // Dynamic Chart labels (recent fills)
+  const labelsContainer = document.getElementById('effChartLabels');
+  const recentPoints = a.slice(-6);
+  if (recentPoints.length) {
+    labelsContainer.innerHTML = recentPoints.map(p => {
+      const d = new Date(p.date);
+      return `<span>${d.getDate()} ${thShortMonths[d.getMonth()]}</span>`;
+    }).join('');
+  } else {
+    labelsContainer.innerHTML = '';
+  }
+
+  // Tip
+  const tipText = document.getElementById('tipText');
+  if (eff.length && avg) {
+    const lastEff = eff.at(-1);
+    if (lastEff > avg) {
+      tipText.textContent = `รอบล่าสุดประหยัดกว่าค่าเฉลี่ย ${(lastEff - avg).toFixed(1)} กม./ลิตร ยอดเยี่ยมมาก!`;
+    } else {
+      tipText.textContent = `ค่าเฉลี่ยอยู่ที่ ${avg.toFixed(1)} กม./ลิตร ขับขี่ความเร็วคงที่จะช่วยประหยัดน้ำมันได้มากขึ้น`;
+    }
+  } else {
+    tipText.textContent = 'เติมแบบเต็มถังอย่างน้อย 2 ครั้งขึ้นไปเพื่อให้อัตราสิ้นเปลืองคำนวณได้อย่างแม่นยำ';
+  }
+}
+
+// --- RENDER LINE CHART ---
+function renderLine(pathId, dotsId, data, color) {
+  const points = data.slice(-6);
+  const pathElem = document.getElementById(pathId);
+  const dotsElem = dotsId ? document.getElementById(dotsId) : null;
+  if (!points.length) {
+    pathElem.setAttribute('d', '');
+    if (dotsElem) dotsElem.innerHTML = '';
+    return;
+  }
+  const min = Math.min(...points) - 0.6;
+  const max = Math.max(...points) + 0.6;
+  const xy = (v, i) => [
+    18 + i * (294 / Math.max(points.length - 1, 1)),
+    130 - ((v - min) / (max - min || 1)) * 100
+  ];
+  pathElem.setAttribute('d', points.map((v, i) => `${i ? 'L' : 'M'}${xy(v, i).join(' ')}`).join(' '));
+  if (dotsElem) {
+    dotsElem.innerHTML = points.map((v, i) => {
+      const p = xy(v, i);
+      // Use a glow effect with a larger transparent circle behind the dot
+      return `<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${color}" opacity="0.2"></circle><circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${color}"><title>${v.toFixed(1)}</title></circle>`;
+    }).join('');
+  }
+}
+
+// --- RENDER HISTORY ---
+function renderHistory() {
+  const q = (document.getElementById('search').value || '').toLowerCase().trim();
+  const fuel = document.getElementById('fuelFilter').value;
+  const from = document.getElementById('fromDate').value;
+  const to = document.getElementById('toDate').value;
+
+  const a = carFills();
+  const list = a.filter(f => {
+    const matchQ = !q || (f.station + ' ' + (f.note || '') + ' ' + (f.fuel || '')).toLowerCase().includes(q);
+    const matchFuel = !fuel || f.fuel === fuel;
+    const matchFrom = !from || f.date >= from;
+    const matchTo = !to || f.date <= to + 'T23:59';
+    return matchQ && matchFuel && matchFrom && matchTo;
+  });
+
+  const historyElem = document.getElementById('historyList');
+  if (!list.length) {
+    historyElem.innerHTML = '<div class="empty">ไม่พบรายการที่ค้นหา</div>';
+    return;
+  }
+
+  // Display newest first
+  historyElem.innerHTML = [...list].reverse().map((f, i) => {
+    const hasReceipt = Boolean(f.receipt);
+    return `
+      <article class="entry" style="animation-delay:${i * 0.03}s">
+        <div class="fuel-dot">⛽</div>
+        <div>
+          <div class="entry-title">${f.station || 'ไม่ระบุปั๊ม'}</div>
+          <div class="entry-meta">
+            <span>${thDate.format(new Date(f.date))}</span>
+            <span>· ${f.fuel || 'เชื้อเพลิง'}</span>
+            <span>· ${money(f.odo)} กม.</span>
+            ${hasReceipt ? `<span class="badge badge-receipt" onclick="viewReceiptImage('${f.receipt}')">🧾 ดูสลิป</span>` : ''}
+          </div>
+        </div>
+        <div>
+          <div class="entry-money">฿${money(f.total)}</div>
+          <div class="entry-litre">${money(f.litres)} ลิตร</div>
+        </div>
+        <div class="entry-actions">
+          <button class="action-btn edit-btn" title="แก้ไข" onclick="openFillModal(${f.id})">✎</button>
+          <button class="action-btn delete-btn" title="ลบ" onclick="deleteFill(${f.id})">⌫</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+// --- RENDER STATS ---
+function renderStats() {
+  const a = carFills();
+  
+  // Rolling last 6 months calculation
+  const now = new Date();
+  const monthsData = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const label = thShortMonths[d.getMonth()];
+    const total = a.filter(f => f.date && f.date.startsWith(key)).reduce((s, f) => s + f.total, 0);
+    monthsData.push({ key, label, total });
+  }
+
+  const maxTotal = Math.max(...monthsData.map(m => m.total), 1);
+  document.getElementById('monthlyBars').innerHTML = monthsData.map(m => `
+    <div class="bar" style="height:${Math.max((m.total / maxTotal) * 120, 8)}px" title="${m.label}: ฿${money(m.total)}">
+      ${m.total > 0 ? `<small>฿${Math.round(m.total)}</small>` : ''}
+      <span>${m.label}</span>
+    </div>
+  `).join('');
+
+  // Fuel Price Trend (last 6 fills)
+  const prices = a.slice(-6).map(x => x.price);
+  renderLine('priceLine', null, prices, 'var(--orange-500)');
+  const avgP = a.length ? (a.reduce((s, x) => s + x.price, 0) / a.length).toFixed(2) : '—';
+  document.getElementById('avgPrice').textContent = `เฉลี่ย ฿${avgP}/ลิตร`;
+
+  // Car Comparison
+  document.getElementById('comparison').innerHTML = cars.map(c => {
+    const v = carFills(c.id);
+    const e = v.map((x, i) => efficiency(i, v)).filter(Boolean);
+    const avg = e.length ? (e.reduce((s, x) => s + x, 0) / e.length).toFixed(1) : '—';
+    const totalSpent = v.reduce((s, x) => s + x.total, 0);
+    return `
+      <div class="compare-row">
+        <div>
+          <b>${c.name}</b>
+          <div class="sub">${c.plate || 'ไม่ระบุทะเบียน'} · รวมใช้จ่าย ฿${money(totalSpent)}</div>
+        </div>
+        <div style="text-align:right">
+          <b>${avg} กม./ลิตร</b>
+          <div class="sub">${v.length} ครั้งที่บันทึก</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- RENDER CARS ---
+function renderCars() {
+  document.getElementById('carList').innerHTML = cars.map(c => `
+    <article class="car-card">
+      <div class="car-card-header">
+        <div>
+          <h3>${c.name} ${c.id === selectedCar ? '<span class="badge badge-active">กำลังใช้งาน</span>' : ''}</h3>
+          <p>
+            ${c.model || 'ไม่ระบุรุ่น'} · ทะเบียน ${c.plate || '—'} · ปี ${c.year || '—'}<br>
+            เชื้อเพลิง: ${c.fuel} · ไมล์เริ่มต้น: ${money(c.startOdo)} กม.
+          </p>
+        </div>
+      </div>
+      <div class="car-card-actions">
+        <button class="secondary" onclick="selectCar('${c.id}')">${c.id === selectedCar ? '✓ รถที่เลือก' : 'เลือกคันนี้'}</button>
+        <button class="secondary" onclick="openCarModal('${c.id}')">แก้ไข</button>
+        ${cars.length > 1 ? `<button class="danger-btn" onclick="deleteCar('${c.id}')">ลบ</button>` : ''}
+      </div>
+    </article>
+  `).join('');
+}
+
+function selectCar(id) {
+  selectedCar = id;
+  persist();
+  renderDashboard();
+  renderCars();
+  showToast('เปลี่ยนรถที่ดูเรียบร้อย');
+}
+
+// --- FILL MODAL ACTIONS (ADD & EDIT) ---
+function openFillModal(fillId = null) {
+  // Populate car selector
+  const carSelect = document.getElementById('fillCar');
+  carSelect.innerHTML = cars.map(c => `<option value="${c.id}" ${c.id === selectedCar ? 'selected' : ''}>${c.name}</option>`).join('');
+
+  const modalTitle = document.getElementById('fillModalTitle');
+  const saveBtn = document.getElementById('saveFillBtn');
+  const err = document.getElementById('odoError');
+  err.style.display = 'none';
+
+  if (fillId) {
+    // EDIT MODE
+    const f = fills.find(x => x.id === fillId);
+    if (!f) return;
+    document.getElementById('editingFillId').value = f.id;
+    modalTitle.textContent = 'แก้ไขการเติมน้ำมัน';
+    saveBtn.textContent = 'บันทึกการแก้ไข';
+    document.getElementById('fillDate').value = f.date;
+    carSelect.value = f.carId;
+    document.getElementById('odometer').value = f.odo;
+    document.getElementById('litres').value = f.litres;
+    document.getElementById('price').value = f.price;
+    document.getElementById('total').value = f.total;
+    document.getElementById('fuel').value = f.fuel || currentCar().fuel || 'แก๊สโซฮอล์ 95';
+    document.getElementById('station').value = f.station || '';
+    document.getElementById('fullTank').checked = f.full !== false;
+    document.getElementById('note').value = f.note || '';
+
+    currentReceiptDataUrl = f.receipt || '';
+    updateReceiptPreview(currentReceiptDataUrl, currentReceiptDataUrl ? 'สลิปที่แนบไว้' : '');
+  } else {
+    // ADD NEW MODE
+    document.getElementById('editingFillId').value = '';
+    modalTitle.textContent = 'บันทึกการเติมน้ำมัน';
+    saveBtn.textContent = 'บันทึกรายการ';
+    document.getElementById('fillDate').value = getLocalISOString();
+    
+    // Auto suggest previous price or odometer
+    const carRecent = carFills();
+    const last = carRecent.at(-1);
+    document.getElementById('odometer').value = '';
+    document.getElementById('litres').value = '';
+    document.getElementById('price').value = last ? last.price : '';
+    document.getElementById('total').value = '';
+    document.getElementById('fuel').value = currentCar().fuel || 'แก๊สโซฮอล์ 95';
+    document.getElementById('station').value = last ? last.station : '';
+    document.getElementById('fullTank').checked = true;
+    document.getElementById('note').value = '';
+
+    currentReceiptDataUrl = '';
+    updateReceiptPreview('', '');
+  }
+
+  document.getElementById('receiptMode').checked = false;
+  document.getElementById('litres').readOnly = false;
+  document.getElementById('receiptHint').textContent = 'กรอกจำนวนลิตรและราคาต่อลิตร ระบบจะคำนวณยอดเงินรวมให้';
+  document.getElementById('fillModal').classList.add('open');
+}
+
+function calculateTotal() {
+  if (document.getElementById('receiptMode').checked) return;
+  const l = +document.getElementById('litres').value;
+  const p = +document.getElementById('price').value;
+  if (l && p) document.getElementById('total').value = (l * p).toFixed(2);
+}
+
+function recalculateFuel() {
+  const mode = document.getElementById('receiptMode').checked;
+  const p = +document.getElementById('price').value;
+  const t = +document.getElementById('total').value;
+  if (mode) {
+    if (p && t) document.getElementById('litres').value = (t / p).toFixed(2);
+  } else {
+    calculateTotal();
+  }
+}
+
+function toggleReceiptMode() {
+  const enabled = document.getElementById('receiptMode').checked;
+  const litresInput = document.getElementById('litres');
+  litresInput.readOnly = enabled;
+  litresInput.style.background = enabled ? '#e8f5ef' : '';
+  document.getElementById('receiptHint').textContent = enabled
+    ? 'กรอกยอดเงินในสลิปและราคาต่อลิตร ระบบจะคำนวณจำนวนลิตรให้ทันที'
+    : 'กรอกจำนวนลิตรและราคาต่อลิตร ระบบจะคำนวณยอดเงินรวมให้';
+  recalculateFuel();
+}
+
+// Receipt Image Processing (Compress thumbnail via Canvas)
+function receiptSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Resize to max 600px width/height to avoid memory bloat
+      const maxDim = 600;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      currentReceiptDataUrl = canvas.toDataURL('image/jpeg', 0.72);
+      updateReceiptPreview(currentReceiptDataUrl, file.name);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateReceiptPreview(dataUrl, name) {
+  const box = document.getElementById('receiptPreviewBox');
+  const img = document.getElementById('receiptPreviewImg');
+  const nameElem = document.getElementById('receiptFileName');
+  const statusElem = document.getElementById('receiptStatus');
+
+  if (dataUrl) {
+    box.style.display = 'flex';
+    img.src = dataUrl;
+    nameElem.textContent = name || 'รูปสลิป';
+    statusElem.textContent = 'แนบรูปเรียบร้อยแล้ว (กดที่รูปเพื่อดูขนาดใหญ่)';
+  } else {
+    box.style.display = 'none';
+    img.src = '';
+    nameElem.textContent = '';
+    statusElem.textContent = 'แนบไว้เป็นหลักฐานเพื่อตรวจสอบย้อนหลัง';
+    document.getElementById('receipt').value = '';
+  }
+}
+
+function clearReceipt() {
+  currentReceiptDataUrl = '';
+  updateReceiptPreview('', '');
+}
+
+function viewReceiptImage(src) {
+  if (!src) return;
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('receiptModal').classList.add('open');
+}
+
+// Save or Update Fill
+function saveFill(e) {
+  e.preventDefault();
+  const editId = document.getElementById('editingFillId').value;
+  const carId = document.getElementById('fillCar').value;
+  const odo = +document.getElementById('odometer').value;
+  const dateVal = document.getElementById('fillDate').value;
+  const err = document.getElementById('odoError');
+
+  // Check odometer chronology
+  const otherFills = fills.filter(f => f.carId === carId && (!editId || f.id !== +editId));
+  const priorFills = otherFills.filter(f => f.date < dateVal).sort((a, b) => new Date(a.date) - new Date(b.date));
+  const laterFills = otherFills.filter(f => f.date > dateVal).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const maxPrior = priorFills.length ? priorFills.at(-1).odo : 0;
+  const minLater = laterFills.length ? laterFills[0].odo : Infinity;
+
+  if (odo < maxPrior) {
+    err.textContent = `เลขไมล์ต้องไม่น้อยกว่า ${money(maxPrior)} กม. (รายการก่อนหน้าของวันที่นี้)`;
+    err.style.display = 'block';
+    return;
+  }
+  if (odo > minLater) {
+    err.textContent = `เลขไมล์ต้องไม่มากกว่า ${money(minLater)} กม. (รายการหลังจากวันที่นี้)`;
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  const fillRecord = {
+    carId,
+    date: dateVal,
+    odo,
+    litres: +document.getElementById('litres').value,
+    price: +document.getElementById('price').value,
+    total: +document.getElementById('total').value,
+    fuel: document.getElementById('fuel').value,
+    station: document.getElementById('station').value.trim(),
+    full: document.getElementById('fullTank').checked,
+    note: document.getElementById('note').value.trim(),
+    receipt: currentReceiptDataUrl
+  };
+
+  if (editId) {
+    const idx = fills.findIndex(f => f.id === +editId);
+    if (idx !== -1) {
+      fills[idx] = { ...fills[idx], ...fillRecord };
+      showToast('แก้ไขรายการสำเร็จ');
+    }
+  } else {
+    fillRecord.id = Date.now();
+    fills.push(fillRecord);
+    showToast('บันทึกการเติมน้ำมันสำเร็จ');
+  }
+
+  selectedCar = carId;
+  persist();
+  closeModal('fillModal');
+  renderDashboard();
+  renderHistory();
+  renderStats();
+}
+
+function deleteFill(id) {
+  const fill = fills.find(f => f.id === id);
+  if (!fill) return;
+  if (confirm(`ลบรายการเติมน้ำมันวันที่ ${thDate.format(new Date(fill.date))} ยอดเงิน ฿${money(fill.total)} ใช่หรือไม่?`)) {
+    fills = fills.filter(f => f.id !== id);
+    persist();
+    renderHistory();
+    renderDashboard();
+    renderStats();
+    showToast('ลบรายการแล้ว');
+  }
+}
+
+// --- CAR MODAL ACTIONS (ADD & EDIT & DELETE) ---
+function openCarModal(carId = null) {
+  const modalTitle = document.getElementById('carModalTitle');
+  const saveBtn = document.getElementById('saveCarBtn');
+  document.getElementById('editingCarId').value = carId || '';
+
+  if (carId) {
+    const c = cars.find(x => x.id === carId);
+    if (!c) return;
+    modalTitle.textContent = 'แก้ไขข้อมูลรถ';
+    saveBtn.textContent = 'บันทึกการแก้ไข';
+    document.getElementById('carName').value = c.name;
+    document.getElementById('carModel').value = c.model || '';
+    document.getElementById('plate').value = c.plate || '';
+    document.getElementById('carYear').value = c.year || '';
+    document.getElementById('startOdo').value = c.startOdo || 0;
+    document.getElementById('carFuel').value = c.fuel || 'แก๊สโซฮอล์ 95';
+  } else {
+    modalTitle.textContent = 'เพิ่มรถใหม่';
+    saveBtn.textContent = 'บันทึกรถ';
+    document.getElementById('carName').value = '';
+    document.getElementById('carModel').value = '';
+    document.getElementById('plate').value = '';
+    document.getElementById('carYear').value = new Date().getFullYear();
+    document.getElementById('startOdo').value = 0;
+    document.getElementById('carFuel').value = 'แก๊สโซฮอล์ 95';
+  }
+  document.getElementById('carModal').classList.add('open');
+}
+
+function saveCar(e) {
+  e.preventDefault();
+  const editId = document.getElementById('editingCarId').value;
+  const carRecord = {
+    name: document.getElementById('carName').value.trim(),
+    model: document.getElementById('carModel').value.trim(),
+    plate: document.getElementById('plate').value.trim(),
+    year: +document.getElementById('carYear').value || '',
+    fuel: document.getElementById('carFuel').value,
+    startOdo: +document.getElementById('startOdo').value || 0
+  };
+
+  if (editId) {
+    const idx = cars.findIndex(c => c.id === editId);
+    if (idx !== -1) {
+      cars[idx] = { ...cars[idx], ...carRecord };
+      showToast('แก้ไขข้อมูลรถแล้ว');
+    }
+  } else {
+    const newId = 'car' + Date.now();
+    cars.push({ id: newId, ...carRecord });
+    selectedCar = newId;
+    showToast('เพิ่มรถใหม่สำเร็จ');
+  }
+
+  persist();
+  closeModal('carModal');
+  renderDashboard();
+  renderCars();
+}
+
+function deleteCar(id) {
+  if (cars.length <= 1) {
+    alert('ต้องมีรถอย่างน้อย 1 คันในระบบ');
+    return;
+  }
+  const car = cars.find(c => c.id === id);
+  if (!car) return;
+  if (confirm(`คุณต้องการลบ "${car.name}" ใช่หรือไม่?\nรายการเติมน้ำมันทั้งหมดของรถคันนี้จะถูกลบไปด้วย`)) {
+    cars = cars.filter(c => c.id !== id);
+    fills = fills.filter(f => f.carId !== id);
+    if (selectedCar === id) selectedCar = cars[0].id;
+    persist();
+    renderCars();
+    renderDashboard();
+    renderHistory();
+    renderStats();
+    showToast('ลบรถเรียบร้อยแล้ว');
+  }
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close modals when clicking backdrop
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.classList.remove('open');
+  });
+});
+
+// --- EXPORT & IMPORT ---
+function exportCSV() {
+  const current = currentCar();
+  const rows = [
+    ['วันที่', 'รถ', 'เลขไมล์ (กม.)', 'ลิตร', 'ราคาต่อลิตร (บาท)', 'ยอดรวม (บาท)', 'เชื้อเพลิง', 'ปั๊ม', 'เต็มถัง', 'หมายเหตุ'],
+    ...carFills().map(f => [
+      f.date,
+      current.name,
+      f.odo,
+      f.litres,
+      f.price,
+      f.total,
+      f.fuel || '',
+      f.station || '',
+      f.full ? 'ใช่' : 'ไม่ใช่',
+      f.note || ''
+    ])
+  ];
+  const csv = '\ufeff' + rows.map(r => r.map(v => '"' + String(v).replaceAll('"', '""') + '"').join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `fuel-log-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('ส่งออกไฟล์ CSV สำเร็จ');
+}
+
+function exportJSONBackup() {
+  const backup = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    cars,
+    fills
+  };
+  const jsonStr = JSON.stringify(backup, null, 2);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([jsonStr], { type: 'application/json;charset=utf-8' }));
+  a.download = `fuel-log-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('ดาวน์โหลดไฟล์สำรองเรียบร้อย');
+}
+
+function importJSONBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (Array.isArray(data.cars) && Array.isArray(data.fills)) {
+        if (confirm(`พบข้อมูลรถ ${data.cars.length} คัน และรายการเติมน้ำมัน ${data.fills.length} รายการ\nต้องการนำเข้าและแทนที่ข้อมูลปัจจุบันใช่หรือไม่?`)) {
+          cars = data.cars;
+          fills = data.fills;
+          selectedCar = cars[0] ? cars[0].id : 'car1';
+          persist();
+          renderDashboard();
+          renderHistory();
+          renderStats();
+          renderCars();
+          showToast('กู้คืนข้อมูลสำเร็จ');
+        }
+      } else {
+        alert('รูปแบบไฟล์ข้อมูลสำรองไม่ถูกต้อง');
+      }
+    } catch (err) {
+      alert('เกิดข้อผิดพลาดในการอ่านไฟล์ JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetToSample() {
+  if (confirm('ต้องการรีเซ็ตข้อมูลเป็นชุดตัวอย่างเริ่มต้นใช่หรือไม่?')) {
+    cars = [...sampleCars];
+    fills = [...sampleFills];
+    selectedCar = 'car1';
+    persist();
+    renderDashboard();
+    renderHistory();
+    renderStats();
+    renderCars();
+    showToast('รีเซ็ตเป็นข้อมูลตัวอย่างแล้ว');
+  }
+}
+
+// Initial render
+renderDashboard();
+
+// Remove injected Netlify badge/drawer elements automatically
+function removeNetlifyBadge() {
+  const elements = document.querySelectorAll('netlify-drawer, [data-netlify-badge], .netlify-badge, #netlify-badge, iframe[src*="netlify"], iframe[title*="Netlify" i]');
+  elements.forEach(el => el.remove());
+}
+window.addEventListener('load', () => {
+  removeNetlifyBadge();
+  setTimeout(removeNetlifyBadge, 500);
+  setTimeout(removeNetlifyBadge, 1500);
+});
+</script>
+</body>
+</html>
